@@ -10,7 +10,7 @@ import com.google.common.base.Throwables;
 
 import configuration.Config;
 
-public class Realmd {
+public class RealmServer {
 
   /**
    * @param args
