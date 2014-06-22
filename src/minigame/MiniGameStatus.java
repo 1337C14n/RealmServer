@@ -17,4 +17,21 @@ public enum MiniGameStatus {
   public int getStatus() {
     return status;
   }
+  
+  public String getStatusMessage(){
+    switch (status){
+    case 0:
+      return "Server is loading";
+    case 1:
+      return "Waiting for players";
+    case 2:
+      return "The game has started";
+    case 3:
+      return "The game has ended";
+    case 4:
+      return "The game is open";
+    default:
+      return "Something must have gone wrong";  
+    }
+  }
 }
