@@ -26,7 +26,7 @@ public class LogConsumer implements Runnable{
   String current;*/
   
   public LogConsumer(){
-    url = "jdbc:mysql://localhost:3306/" + dataBase;
+    url = "jdbc:mysql://"+ url + ":3306/" + dataBase;
 
     try {
       con = DriverManager.getConnection(url, user, password);
@@ -94,7 +94,7 @@ public class LogConsumer implements Runnable{
   }
   
   private void connect() {
-    url = "jdbc:mysql://localhost:3306/" + dataBase;
+    url = "jdbc:mysql://" + url + ":3306/" + dataBase;
 
     try {
       con = DriverManager.getConnection(url, user, password);
