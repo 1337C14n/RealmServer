@@ -374,7 +374,7 @@ public enum DataBaseConnector {
         }
 
 
-        Player player = new Player(playerName, activeChannel, channels);
+        Player player = new Player(name, activeChannel, channels);
         player.setMuted(muted);
         player.setIgnoredPlayers(ignoredPlayersTemp);
 
