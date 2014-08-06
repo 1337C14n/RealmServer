@@ -227,7 +227,7 @@ public enum DataBaseConnector {
       statement.execute();
     } catch (SQLException e1) {
       e1.printStackTrace();
-    }
+    }    
   }
 
   public boolean isBanned(String name) {
@@ -354,7 +354,6 @@ public enum DataBaseConnector {
       rs = preparedStatement.executeQuery();
 
       while (rs.next()) {
-        String playerName = rs.getString("playername");
         String activeChannel = rs.getString("activechannel");
         Boolean muted = rs.getBoolean("muted");
         Timestamp timestamp = rs.getTimestamp("muteUntil");
