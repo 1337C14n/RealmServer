@@ -27,6 +27,13 @@ public class ChatMessageHandler {
     player = PlayerHandler.INSTANCE.getPlayerFromPlayerName(name);
 
     // check to see if player is currently in a pm;
+    if(player.isInPrivateChat()){
+      if(player.getPlayerTalkingTo() != null){
+        PlayerHandler.INSTANCE.getPlayerFromPlayerName(player.getPlayerTalkingTo()).sendPrivateMessage(player, message);
+        return new PlayerMessage(player.getName(), "&7To " + player.getPlayerTalkingTo() + "&2: " + message);
+      }
+
+    }
 
     Channel channel = ChannelHandler.INSTANCE.getChannelFromChannelName(player.getActiveChannel());
 

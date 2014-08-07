@@ -116,6 +116,9 @@ public class Ch extends Command {
     if (ChannelHandler.INSTANCE.ChannelExists(firstArg)) {
       Channel channel = ChannelHandler.INSTANCE.getChannelFromChannelName(firstArg);
       
+      //Sender went to a channel they are no longer in a private channel
+      sender.setInPrivateChat(false);
+      
       /*
        * If there is no password for the channel just add them to it
        */

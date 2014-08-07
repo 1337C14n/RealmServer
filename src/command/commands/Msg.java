@@ -2,11 +2,11 @@ package command.commands;
 
 import java.util.ArrayList;
 
+import main.Player;
 import main.PlayerHandler;
 import main.logging.Logger;
 import command.Command;
 import chat.ChannelHandler;
-import chat.PrivateChannelMap;
 import packets.CommandMessage;
 import packets.PlayerMessage;
 /*
@@ -52,44 +52,32 @@ public class Msg extends Command {
     playerToConnectTo = fullPlayerName;
     
     if(PlayerHandler.INSTANCE.PlayerExists(playerToConnectTo)){
+      
+      Player recievingPlayer = PlayerHandler.INSTANCE.getPlayerFromPlayerName(playerToConnectTo);
+      
       if(message.getArgs().length > 1){ 
+        /*
+         * ./msg <player> <message>
+         */
+        
+        //The message consists of multiple arguments from 1 to length of args
         String messages = "";
+        
         for(int i = 1; i < message.getArgs().length; i++){
           messages += message.getArgs()[i] + " ";
         }
         
-        // Must be a response to an open channel.
-        String openPrivateChannel = PrivateChannelMap.INSTANCE.checkForOpenChannel(message.getSender());
-        Logger.log("Open Private Channel: " + openPrivateChannel, Logger.DEBUG);
+        //Set the player we are sending a private message to.
         
-        if(openPrivateChannel != null){
-          // /msg <player> <message> When there is an open channel
-          
-          //we are going to allow them to respond to this type of message
-          
-          ChannelHandler.INSTANCE.getChannelFromChannelName(openPrivateChannel).SendMessage(messages, null, message.getSender(), false);
-        } else {
-          // /msg <player> <message> When there isnt an open channel
-          String sender = message.getSender();
-          
-          ChannelHandler.INSTANCE.newChannel("_private_" + sender, "", sender);
-          
-          ChannelHandler.INSTANCE.addPlayerToChannelSetDefault(sender, "_private_" + sender);
-          
-          ChannelHandler.INSTANCE.addPlayerToChannel(playerToConnectTo, "_private_" + sender);
-          
-          ChannelHandler.INSTANCE.getChannelFromChannelName("_private_" + sender).SendMessage(messages, null, sender, false);
-        }
+        recievingPlayer.setLastPMFrom(sender.getName());
+        
+        recievingPlayer.sendPrivateMessage(recievingPlayer, messages);
+        
+
       } else { // /msg <player>
-        String sender = message.getSender();
-        
-        ChannelHandler.INSTANCE.newChannel("_private_" + sender, "", sender);
-        
-        ChannelHandler.INSTANCE.addPlayerToChannelSetDefault(sender, "_private_" + sender);
-        
-        ChannelHandler.INSTANCE.addPlayerToChannel(playerToConnectTo, "_private_" + sender);
-        
-        return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + playerToConnectTo);        
+        this.sender.setPlayerTalkingTo(recievingPlayer.getName());
+        this.sender.setInPrivateChat(true);
+        recievingPlayer.setLastPMFrom(sender.getName());
       }
     } else {
       return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");

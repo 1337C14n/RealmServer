@@ -1,7 +1,6 @@
 package command.commands;
 
 import main.DataBaseConnector;
-import main.PlayerHandler;
 import packets.CommandMessage;
 import packets.PermissionChange;
 import command.Command;

@@ -120,27 +120,6 @@ public class Channel {
       Clients.INSTANCE.getClientFromInt(chatClient).getWriter().addToQueue(new ChannelMessage(channelName, senderPrefix, sender, null, message, channelPrefixEnabled));
     }
 
-    // Order messages by player and then send by server
-
-    if (isPrivate) {
-      /*
-       * Check to see if the player was sending a message to a private channel.
-       * If that player is sending to a private channel add an open channel to
-       * the private channel map That player will then be able to reply to the
-       * last message by searching the map.
-       */
-      String recipientPlayer = null;
-      
-      for (String recipient : players) {
-        recipientPlayer = recipient;
-      }
-
-      if (recipientPlayer != null) {
-        PrivateChannelMap.INSTANCE.addOpenChannel(recipientPlayer, name);
-        PrivateChannelMap.INSTANCE.addOpenChannel(sender, name);
-      }
-    }
-
     HashMap<Integer, ArrayList<String>> playerMap = new HashMap<Integer, ArrayList<String>>();
 
     for (String player : players) {

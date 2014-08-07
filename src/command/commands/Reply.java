@@ -1,10 +1,8 @@
 package command.commands;
 
-import main.logging.Logger;
+import main.PlayerHandler;
 import packets.CommandMessage;
 import packets.PlayerMessage;
-import chat.ChannelHandler;
-import chat.PrivateChannelMap;
 import command.Command;
 
 public class Reply extends Command{
@@ -16,33 +14,30 @@ public class Reply extends Command{
 
   @Override
   public Object execute() {
-    String openPrivateChannel = PrivateChannelMap.INSTANCE.checkForOpenChannel(message.getSender());
-    Logger.log("Open Private Channel: " + openPrivateChannel, Logger.DEBUG);
-    
-    if(message.getArgs().length == 0){
-      if(openPrivateChannel != null){
-        ChannelHandler.INSTANCE.addPlayerToChannelSetDefault(message.getSender(), openPrivateChannel);
-        
-        String recievingPlayer = ChannelHandler.INSTANCE.getChannelFromChannelName(openPrivateChannel).getPlayerThatIsNot(message.getSender());
-        if(recievingPlayer != null){
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + recievingPlayer);
-        } else {
-          return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not available");
-        }
-
-      }
+    if(sender == null){
+      return null;
+    }
+    if(sender.getLastPMFrom() == null){
       return new PlayerMessage(message.getSender(), "&7[&4*&7] No open channel");
+    }
+    if(PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getLastPMFrom()) == null){
+      return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");
+    }
+    
+    if(message.getArgs().length == 0){    
+      
+        sender.setInPrivateChat(true);
+        sender.setPlayerTalkingTo(sender.getLastPMFrom());
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + sender.getLastPMFrom());
+      
     } else { // /r <message>
       String messages = "";
       for(int i = 0; i < message.getArgs().length; i++){
         messages += message.getArgs()[i] + " ";
       }
       
-      if(openPrivateChannel != null){
-        ChannelHandler.INSTANCE.getChannelFromChannelName(openPrivateChannel).SendMessage(messages, null, message.getSender(), false);
-        return null;
-      }
-      return new PlayerMessage(message.getSender(), "&7[&4*&7] No open channel");
+      PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getPlayerTalkingTo()).sendPrivateMessage(sender, messages);
+      return new PlayerMessage(sender.getName(), "&7To " + sender.getPlayerTalkingTo() + "&2: " + message);
     }
   }
 }

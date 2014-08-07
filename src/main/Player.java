@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import packets.Kick;
+import packets.PlayerMessage;
 
+/**
+ * Represents a player within the realm server
+ * @author x4n4th
+ *
+ */
 public class Player {
 
-  /**
-   * @param args
-   */
   private String name;
   private int activeServer;
 
@@ -22,7 +25,13 @@ public class Player {
   private boolean muted;
   Calendar unmuteDate;
 
-  private boolean talkingInPM;
+  /*
+   * Wether or not that player is talking in a private chat
+   * Who that player is talking to
+   * what player last sent a private message to the player
+   */
+  private volatile boolean inPrivateChat;
+  private String playerTalkingTo;
   private String lastPMFrom;
 
   String[] permissions;
@@ -36,7 +45,8 @@ public class Player {
     this.muted = false;
     ignoredPlayers = new HashMap<String, Boolean>();
     this.lastPMFrom = null;
-    this.talkingInPM = false;
+    this.inPrivateChat = false;
+    this.playerTalkingTo = null;
   }
 
   public Player(String name, String activeChannel) {
@@ -47,7 +57,8 @@ public class Player {
     this.channels = defaultChannel;
     this.muted = false;
     this.lastPMFrom = null;
-    this.talkingInPM = false;
+    this.inPrivateChat = false;
+    this.playerTalkingTo = null;
   }
 
   public void addToChannel(String channel) {
@@ -185,11 +196,27 @@ public class Player {
     return lastPMFrom;
   }
 
-  public void setInPM(boolean inPM) {
-    this.talkingInPM = inPM;
+  public boolean getInPM() {
+    return inPrivateChat;
   }
 
-  public boolean getInPM() {
-    return talkingInPM;
+  public boolean isInPrivateChat() {
+    return inPrivateChat;
+  }
+
+  public void setInPrivateChat(boolean inPrivateChat) {
+    this.inPrivateChat = inPrivateChat;
+  }
+
+  public String getPlayerTalkingTo() {
+    return playerTalkingTo;
+  }
+
+  public void setPlayerTalkingTo(String playerTalkingTo) {
+    this.playerTalkingTo = playerTalkingTo;
+  }
+  
+  public void sendPrivateMessage(Player sender, String message){
+    this.getClient().write(new PlayerMessage(this.name, "&7From " + sender.getName() + "&2: " + message));
   }
 }
