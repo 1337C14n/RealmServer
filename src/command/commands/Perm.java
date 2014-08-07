@@ -1,6 +1,5 @@
 package command.commands;
 
-import main.Clients;
 import main.DataBaseConnector;
 import main.PlayerHandler;
 import packets.CommandMessage;
@@ -40,10 +39,7 @@ public class Perm extends Command{
     switch(args[0].toUpperCase()){
     case "PROMOTE":
       if(DataBaseConnector.INSTANCE.promotePlayer(args[1])){
-        int currentServer = PlayerHandler.INSTANCE.getPlayerFromPlayerName(args[1]).getActiveServer();
-        
-
-        Clients.INSTANCE.getClientFromInt(currentServer).getWriter().addToQueue(new PermissionChange(args[1]));
+        sender.getClient().write(new PermissionChange(args[1]));
         
         return response("&7[&2*&7] Player Promoted");
       } else {
@@ -53,10 +49,7 @@ public class Perm extends Command{
       
     case "DEMOTE":
       if(DataBaseConnector.INSTANCE.demotePlayer(args[1])){
-        int currentServer = PlayerHandler.INSTANCE.getPlayerFromPlayerName(args[1]).getActiveServer();
-        
-
-        Clients.INSTANCE.getClientFromInt(currentServer).getWriter().addToQueue(new PermissionChange(args[1]));
+        sender.getClient().write(new PermissionChange(args[1]));
         
         return response("&7[&2*&7] Player Demoted");
       } else {
