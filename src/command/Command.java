@@ -1,5 +1,7 @@
 package command;
 
+import main.Player;
+import main.PlayerHandler;
 import packets.CommandMessage;
 import packets.Packet;
 import packets.PlayerMessage;
@@ -9,13 +11,14 @@ public abstract class Command {
   protected CommandMessage message;
   protected String[] args;
   protected int argsLength;
-  protected String sender;
+  protected Player sender;
   
   public Command(CommandMessage message){
     this.message = message;
-    args = message.getArgs();
-    argsLength = args.length;
-    sender = message.getSender();
+    this.args = message.getArgs();
+    this.argsLength = args.length;
+    
+    this.sender = PlayerHandler.INSTANCE.getPlayerFromPlayerName(message.getSender()); 
   }
   
   public abstract Object execute();

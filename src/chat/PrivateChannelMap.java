@@ -7,7 +7,7 @@ public enum PrivateChannelMap {
   
   private ConcurrentHashMap<String, String> privateChannels = new ConcurrentHashMap<>();
   
-  // PlayerName <----> PlayerName
+  // PlayerName <----> channelName
   
   public String checkForOpenChannel(String playerName){
     return privateChannels.containsKey(playerName) ? privateChannels.get(playerName) : null;

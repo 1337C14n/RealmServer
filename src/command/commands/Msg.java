@@ -2,7 +2,6 @@ package command.commands;
 
 import java.util.ArrayList;
 
-import main.Clients;
 import main.PlayerHandler;
 import main.logging.Logger;
 import command.Command;
@@ -10,27 +9,29 @@ import chat.ChannelHandler;
 import chat.PrivateChannelMap;
 import packets.CommandMessage;
 import packets.PlayerMessage;
-
+/*
+ * ./msg
+ * ./msg <name>
+ * ./msg <name> <message>
+ */
 public class Msg extends Command {
 
   public Msg(CommandMessage message) {
     super(message);
-    // TODO Auto-generated constructor stub
   }
 
   @Override
   public Object execute() {
     
     if(message.getArgs().length < 1){
-      return null;
+      return new PlayerMessage(sender.getName(), "&7[&4*&7] /msg <name> <message>");
     }
     
-    String playerToConnectTo = message.getArgs()[0];
-    
+    String playerToConnectTo = message.getArgs()[0];   
     String fullPlayerName = null;
     
     if(PlayerHandler.INSTANCE.getPlayerFromPlayerName(playerToConnectTo) != null){
-      fullPlayerName = PlayerHandler.INSTANCE.getPlayerFromPlayerName(playerToConnectTo).getName();
+      fullPlayerName = playerToConnectTo;
     } else {
       ArrayList<String> players = PlayerHandler.INSTANCE.getClosestPlayers(playerToConnectTo);
       
@@ -39,11 +40,12 @@ public class Msg extends Command {
       } else if (players.size() > 1){
         fullPlayerName = players.get(0);
         String playersString = "";
+        
         for(String player : players){
           playersString += player + ", ";
         }
-        Clients.INSTANCE.getClientFromInt(PlayerHandler.INSTANCE.getPlayerFromPlayerName(message.getSender()).getActiveServer())
-          .getWriter().addToQueue(new PlayerMessage(message.getSender(), playersString));
+        
+        sender.getClient().getWriter().addToQueue(new PlayerMessage(message.getSender(), playersString));
       }
     }
     
@@ -72,13 +74,13 @@ public class Msg extends Command {
           
           ChannelHandler.INSTANCE.newChannel("_private_" + sender, "", sender);
           
-          ChannelHandler.INSTANCE.addPlayerToChannel(sender, "_private_" + sender);
+          ChannelHandler.INSTANCE.addPlayerToChannelSetDefault(sender, "_private_" + sender);
           
           ChannelHandler.INSTANCE.addPlayerToChannel(playerToConnectTo, "_private_" + sender);
           
           ChannelHandler.INSTANCE.getChannelFromChannelName("_private_" + sender).SendMessage(messages, null, sender, false);
         }
-      } else { // /msg <player> || /msg
+      } else { // /msg <player>
         String sender = message.getSender();
         
         ChannelHandler.INSTANCE.newChannel("_private_" + sender, "", sender);
@@ -87,15 +89,12 @@ public class Msg extends Command {
         
         ChannelHandler.INSTANCE.addPlayerToChannel(playerToConnectTo, "_private_" + sender);
         
-        String recievingPlayer = ChannelHandler.INSTANCE.getChannelFromChannelName("_private_" + sender).getPlayerThatIsNot(message.getSender());
-        if(recievingPlayer != null){
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + recievingPlayer);
-        } else {
-          return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not available");
-        }
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + playerToConnectTo);        
       }
+    } else {
+      return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");
     }
-    return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");
+    return null;
   }
     
 }

@@ -130,6 +130,7 @@ public class Channel {
        * last message by searching the map.
        */
       String recipientPlayer = null;
+      
       for (String recipient : players) {
         recipientPlayer = recipient;
       }

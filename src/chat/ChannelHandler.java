@@ -14,8 +14,8 @@ public enum ChannelHandler {
 
   private ConcurrentHashMap<String, Channel> channelList = new ConcurrentHashMap<String, Channel>();
 
-  public Channel getChannelFromChannelName(String player) {
-    Channel channel = channelList.get(player);
+  public Channel getChannelFromChannelName(String channelName) {
+    Channel channel = channelList.get(channelName);
     if (channel == null) {
       //Player in channel that doesn't exist.
       return channelList.get("g");
@@ -75,14 +75,19 @@ public enum ChannelHandler {
   public void addPlayerToChannelSetDefault(String player, String channel) {
     if(channelList.containsKey(channel)){
       Channel channelChannel = channelList.get(channel);
+      
       if(channelChannel.isPrivate()){
+        
         String owner = channelChannel.getOwners().get(0);
+        
         for(String channelPlayer : channelChannel.getOwners()){
+          
           if(!channelPlayer.equalsIgnoreCase(owner)){
+            
             channelChannel.removePlayer(channelPlayer);
             PlayerHandler.INSTANCE.getPlayerFromPlayerName(channelPlayer).removeChannel(channelChannel.getChannelName());
           }
-        }
+        }    
       }
       
       if(!channelChannel.ContainsPlayer(player)){

@@ -1,6 +1,5 @@
 package command.commands;
 
-import main.PlayerHandler;
 import packets.CommandMessage;
 import packets.PlayerMessage;
 import command.Command;
@@ -16,11 +15,11 @@ public class Ignored extends Command{
   public Object execute() {
     String ignoredPlayers = "";
     
-    for(String player: PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender).getIgnoredPlayers()){
+    for(String player: sender.getIgnoredPlayers()){
       ignoredPlayers += (player + " "); 
     }
     
-    return new PlayerMessage(sender, "&7[&2*&7] Ignoring: &f" + ignoredPlayers);
+    return new PlayerMessage(sender.getName(), "&7[&2*&7] Ignoring: &f" + ignoredPlayers);
   }
 
 }

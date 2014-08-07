@@ -19,11 +19,9 @@ public class Transfer extends Command{
     if(argsLength == 2){
       //String playerName = args[0];
       //String serverName = args[1];
-      
-      
     }
     
-    return new PlayerMessage(sender, "&7[&4*&7] Invalid. Please provide /tran <playername> <server>");
+    return new PlayerMessage(sender.getName(), "&7[&4*&7] Invalid. Please provide /tran <playername> <server>");
   }
   
 
