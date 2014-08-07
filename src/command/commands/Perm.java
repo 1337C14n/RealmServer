@@ -58,7 +58,7 @@ public class Perm extends Command{
 
         Clients.INSTANCE.getClientFromInt(currentServer).getWriter().addToQueue(new PermissionChange(args[1]));
         
-        return response("&7[&2*&7] Player Promoted");
+        return response("&7[&2*&7] Player Demoted");
       } else {
         return response("&7[&4*&7] Player did not exist");
       }
