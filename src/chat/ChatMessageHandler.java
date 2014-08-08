@@ -34,14 +34,13 @@ public class ChatMessageHandler {
     if(player.isInPrivateChat()){
       if(player.getPlayerTalkingTo() != null){
         PlayerHandler.INSTANCE.getPlayerFromPlayerName(player.getPlayerTalkingTo()).sendPrivateMessage(player, message);
-        player.getClient().write(new PlayerMessage(player.getName(), "&7To " + player.getPlayerTalkingTo() + "&2: " + message));
+        return new PlayerMessage(player.getName(), "&7To " + player.getPlayerTalkingTo() + "&2: " + message);
       }
 
+    } else {
+      Channel channel = ChannelHandler.INSTANCE.getChannelFromChannelName(player.getActiveChannel());
+      channel.SendMessage(message, playerPrefix, name, playerIsMod);
     }
-
-    Channel channel = ChannelHandler.INSTANCE.getChannelFromChannelName(player.getActiveChannel());
-    channel.SendMessage(message, playerPrefix, name, playerIsMod);
-    
     return null;
   }
 }

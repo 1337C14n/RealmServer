@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import main.DataBaseConnector;
 import main.PlayerHandler;
-import packets.PrivateMessages;
+import packets.PrivateMessagePacket;
 
 //NOT IMPLEMENTED YET!!! INCOMPLETE!!!
 
@@ -47,7 +47,7 @@ public class PrivateMessage {
 		
 		privateLog.add(privateChatMessage);
 		
-		PlayerHandler.INSTANCE.getPlayerFromPlayerName(player2).getClient().write(new PrivateMessages(player1, player2, message));
+		PlayerHandler.INSTANCE.getPlayerFromPlayerName(player2).getClient().write(new PrivateMessagePacket(player1, player2, message));
 		
 		/*
 		 * if sender is sending a message to offline player, send it as mail (implement later);

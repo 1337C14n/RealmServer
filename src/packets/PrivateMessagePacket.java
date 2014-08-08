@@ -2,7 +2,7 @@ package packets;
 
 //NOT IMPLEMENTED YET!!! INCOMPLETE!!!
 
-public class PrivateMessages extends ChatPacket {
+public class PrivateMessagePacket extends ChatPacket {
 
   /**
 	 * 
@@ -14,9 +14,9 @@ public class PrivateMessages extends ChatPacket {
   private String message;
   private boolean senderIsModerator = false;
 
-  public PrivateMessages(String player1, String player2, String message) {
-    this.sender = player1;
-    this.recipient = player2;
+  public PrivateMessagePacket(String sender, String recipient, String message) {
+    this.sender = sender;
+    this.recipient = recipient;
     this.message = message;
   }
 
