@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 import main.Player;
 import main.PlayerHandler;
-import main.logging.Logger;
 import command.Command;
-import chat.ChannelHandler;
 import packets.CommandMessage;
 import packets.PlayerMessage;
 /*
@@ -78,6 +76,7 @@ public class Msg extends Command {
         this.sender.setPlayerTalkingTo(recievingPlayer.getName());
         this.sender.setInPrivateChat(true);
         recievingPlayer.setLastPMFrom(sender.getName());
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with " + recievingPlayer.getName());
       }
     } else {
       return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");

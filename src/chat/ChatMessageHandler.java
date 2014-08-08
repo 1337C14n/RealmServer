@@ -25,23 +25,23 @@ public class ChatMessageHandler {
       PlayerHandler.INSTANCE.playerLogin(name, clientId);
     }
     player = PlayerHandler.INSTANCE.getPlayerFromPlayerName(name);
-
+    
+    if (player.isMuted()) {
+      return new PlayerMessage(name, "You are muted");
+    }
+    
     // check to see if player is currently in a pm;
     if(player.isInPrivateChat()){
       if(player.getPlayerTalkingTo() != null){
         PlayerHandler.INSTANCE.getPlayerFromPlayerName(player.getPlayerTalkingTo()).sendPrivateMessage(player, message);
-        return new PlayerMessage(player.getName(), "&7To " + player.getPlayerTalkingTo() + "&2: " + message);
+        player.getClient().write(new PlayerMessage(player.getName(), "&7To " + player.getPlayerTalkingTo() + "&2: " + message));
       }
 
     }
 
     Channel channel = ChannelHandler.INSTANCE.getChannelFromChannelName(player.getActiveChannel());
-
-    if (player.isMuted()) {
-      return new PlayerMessage(name, "You are muted");
-    } else {
-      channel.SendMessage(message, playerPrefix, name, playerIsMod);
-    }
+    channel.SendMessage(message, playerPrefix, name, playerIsMod);
+    
     return null;
   }
 }
