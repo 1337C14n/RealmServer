@@ -26,60 +26,48 @@ public class Ban extends Command{
     String time = message.getArgs()[1];
     String reason = message.getArgs()[2];
     
+    if (DataBaseConnector.INSTANCE.isBanned(player)) {
+      return new PlayerMessage(message.getSender(), "&7[&4*&7] " + player + " is already banned");
+    }
+    
     if (time == null) {
-
       Logger.log("Banning Player: " + player + " with Reason: " + reason, Logger.MOD);
       
       Player chatPlayer = PlayerHandler.INSTANCE.getPlayerFromPlayerName(player);
       if (chatPlayer != null) {
         chatPlayer.ban(message.getSender(), reason);
-        PlayerHandler.INSTANCE.addPlayerToBanCache(player);
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
       } else {
         // Player is offline. We will attempt to ban player only if this
         // player is in the database.
-        if (DataBaseConnector.INSTANCE.isBanned(player)) {
-          DataBaseConnector.INSTANCE.banned(player, message.getSender(), false, null, reason);
-          PlayerHandler.INSTANCE.removePlayerFromBanCache(player);
-          Logger.log("un banning Player: " + player + " with Reason: " + reason, Logger.MOD);
-          
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now unbanned");
-        } else {
-          DataBaseConnector.INSTANCE.banned(player, message.getSender(), true, null, reason);
-          PlayerHandler.INSTANCE.addPlayerToBanCache(player);
-          Logger.log("Banning Player: " + player + " with Reason: " + reason, Logger.MOD);
-          
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
-        }
+
+        DataBaseConnector.INSTANCE.banned(player, message.getSender(), true, null, reason);
+
+        Logger.mod("Banning Player: " + player + " with Reason: " + reason);
+        
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
+      
       }
     } else {
 
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.SECOND, Integer.parseInt(time));
 
-      Logger.log("Banning Player: " + player + " with Reason: " + reason, Logger.MOD);
+      Logger.mod("Banning Player: " + player + " with Reason: " + reason);
+      
       Player chatPlayer = PlayerHandler.INSTANCE.getPlayerFromPlayerName(player);
       if (chatPlayer != null) {
         chatPlayer.ban(reason, message.getSender(), cal);
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
       } else {
         // Player is offline. We will attempt to ban player only if this
         // player is in the database.
-        if (DataBaseConnector.INSTANCE.isBanned(player)) {
-          DataBaseConnector.INSTANCE.banned(player, message.getSender(), false, cal, reason);
-          PlayerHandler.INSTANCE.removePlayerFromBanCache(player);
-          Logger.log("unBanning Player: " + player + " with Reason: " + reason, Logger.MOD);
-          
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now unbanned");
-        } else {
-          DataBaseConnector.INSTANCE.banned(player, message.getSender(), true, cal, reason);
-          PlayerHandler.INSTANCE.addPlayerToBanCache(player);
-          Logger.log("Banning Player: " + player + " with Reason: " + reason, Logger.MOD);
-          
-          return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
-        }
+        DataBaseConnector.INSTANCE.banned(player, message.getSender(), true, cal, reason);
+
+        Logger.log("Banning Player: " + player + " with Reason: " + reason, Logger.MOD);
+        
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is now banned");
       }
     }
-
-    return null;
   }
-
 }

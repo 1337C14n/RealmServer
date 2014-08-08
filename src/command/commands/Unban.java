@@ -16,14 +16,20 @@ public class Unban extends Command{
   @Override
   public Object execute() {
     if(message.getArgs().length != 2){
-      return new PlayerMessage(message.getSender(), "/unban <playerName>"); 
+      return new PlayerMessage(message.getSender(), "&7[&4*&7] /unban <playerName>"); 
     } else {
       String player = message.getArgs()[0];
       String reason = message.getArgs()[1];
       
-      DataBaseConnector.INSTANCE.banned(player, message.getSender(), false, null, reason);
+      if (DataBaseConnector.INSTANCE.isBanned(player)) {
+        DataBaseConnector.INSTANCE.banned(player, message.getSender(), false, null, reason);
+        return new PlayerMessage(message.getSender(), "&7[&2*&7] " + player + " is unbanned");
+      } else {
+        return new PlayerMessage(message.getSender(), "&7[&4*&7] " + player + " was not banned");
+      }
+      
     }
-    return null;
+
   }
 
 }

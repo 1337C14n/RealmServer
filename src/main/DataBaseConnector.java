@@ -51,7 +51,6 @@ public enum DataBaseConnector {
 
   private void connect() {
 
-
     try {
       con = DriverManager.getConnection(connectionString, user, password);
       setConnected(true);
@@ -195,15 +194,17 @@ public enum DataBaseConnector {
     if (playerExists(name)) {
       try {
         PreparedStatement statement;
-        statement = getConnection().prepareStatement("INSERT INTO bans " + "(name, reason, banee) " + "VALUES (?, ?, ?);");
+        String action = isBanned ? "Unban" : "Ban";
+        statement = getConnection().prepareStatement("INSERT INTO bans " + "(name, action, reason, banee) " + "VALUES (?, ?, ?, ?);");
 
         statement.setString(1, name);
-        statement.setString(2, reason);
-        statement.setString(3, banee);
+        statement.setString(2, action);
+        statement.setString(3, reason);
+        statement.setString(4, banee);
 
         statement.execute();
       } catch (SQLException e1) {
-        e1.printStackTrace();
+        Logger.critical(Throwables.getStackTraceAsString(e1));
       }
 
       try {

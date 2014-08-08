@@ -12,7 +12,6 @@ public enum PlayerHandler {
   INSTANCE;
 
   private ConcurrentHashMap<String, Player> playerList = new ConcurrentHashMap<String, Player>();
-  private ConcurrentHashMap<String, Boolean> banCache = new ConcurrentHashMap<String, Boolean>();
 
   public Player getPlayerFromPlayerName(String player) {
     if (!playerList.containsKey(player)) {
@@ -140,19 +139,5 @@ public enum PlayerHandler {
     }
 
     return possiblePlayers;
-  }
-
-  public void addPlayerToBanCache(String player) {
-    banCache.put(player, true);
-  }
-
-  public boolean banCacheContains(String player) {
-    return banCache.containsKey(player);
-  }
-
-  public void removePlayerFromBanCache(String player) {
-    if (banCache.containsKey(player)) {
-      banCache.remove(player);
-    }
   }
 }

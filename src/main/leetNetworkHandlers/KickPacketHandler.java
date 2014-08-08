@@ -1,11 +1,10 @@
 package main.leetNetworkHandlers;
 
-import packets.Kick;
-import packets.Packet;
 import main.Client;
 import main.DataBaseConnector;
 import main.PacketHandler;
-import main.PlayerHandler;
+import packets.Kick;
+import packets.Packet;
 
 public class KickPacketHandler extends PacketHandler{
 
@@ -19,7 +18,7 @@ public class KickPacketHandler extends PacketHandler{
     String message = ((Kick) packet).getMessage();
 
     if (message == null) {
-      if (DataBaseConnector.INSTANCE.isBanned(player) || PlayerHandler.INSTANCE.banCacheContains(player)) {
+      if (DataBaseConnector.INSTANCE.isBanned(player)) {
         return new Kick(player, "You are banned");
       } else {
         return new Kick(player, null);

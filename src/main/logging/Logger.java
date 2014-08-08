@@ -55,4 +55,8 @@ public class Logger {
   public static void critical(String message){
     log(message, CRITICAL);
   }
+
+  public static void mod(String message) {
+    log(message, MOD);
+  }
 }
