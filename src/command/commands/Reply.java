@@ -37,7 +37,7 @@ public class Reply extends Command{
       }
       
       PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getPlayerTalkingTo()).sendPrivateMessage(sender, messages);
-      return new PlayerMessage(sender.getName(), "&7To " + sender.getPlayerTalkingTo() + "&2: " + message);
+      return new PlayerMessage(sender.getName(), "&7To " + sender.getPlayerTalkingTo() + "&2: " + messages);
     }
   }
 }
