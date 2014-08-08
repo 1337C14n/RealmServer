@@ -24,33 +24,39 @@ import configuration.Config;
 
 public enum DataBaseConnector {
   INSTANCE;
-
-  private DataBaseConnector() {
-    connect();
-    
-    /*DataBasePool HikariPool = new DataBasePool();
-    this.pool = HikariPool.getConnectionPool();*/
-  }
-
-  //private HikariDataSource pool;
+  
   private Statement st = null;
   private ResultSet rs = null;
   private Connection con;
   
-  private String dataBase = Config.INSTANCE.getConfig().getDatabase();
-  private String url = Config.INSTANCE.getConfig().getUrl();
-  private String user = Config.INSTANCE.getConfig().getUser();
-  private String password = Config.INSTANCE.getConfig().getPassword();
+  private String dataBase;
+  private String url;
+  private String user; 
+  private String password;
+  private String connectionString;
+ 
   private boolean connected = false;
+  
+  private DataBaseConnector() {
+    
+    this.dataBase = Config.INSTANCE.getConfig().getDatabase();
+    this.url = Config.INSTANCE.getConfig().getUrl();
+    this.user = Config.INSTANCE.getConfig().getUser();
+    this.password = Config.INSTANCE.getConfig().getPassword();
+    
+    this.connectionString = "jdbc:mysql://" + url + ":3306/" + dataBase;
+    
+    connect();
+  }
 
   private void connect() {
-    url = "jdbc:mysql://" + url + ":3306/" + dataBase;
+
 
     try {
-      con = DriverManager.getConnection(url, user, password);
+      con = DriverManager.getConnection(connectionString, user, password);
       setConnected(true);
     } catch (SQLException ex) {
-      Logger.log(ex.getMessage(), Logger.CRITICAL);
+      Logger.critical(Throwables.getStackTraceAsString(ex));
       setConnected(false);
     }
     initialize();
