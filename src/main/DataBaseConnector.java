@@ -194,7 +194,7 @@ public enum DataBaseConnector {
     if (playerExists(name)) {
       try {
         PreparedStatement statement;
-        String action = isBanned ? "Unban" : "Ban";
+        String action = isBanned ? "Ban" : "Unban";
         statement = getConnection().prepareStatement("INSERT INTO bans " + "(name, action, reason, banee) " + "VALUES (?, ?, ?, ?);");
 
         statement.setString(1, name);
