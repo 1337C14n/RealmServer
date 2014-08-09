@@ -69,7 +69,7 @@ public class Msg extends Command {
         
         recievingPlayer.sendPrivateMessage(sender, messages);
         
-        return new PlayerMessage(message.getSender(), "&7To " + recievingPlayer.getName() + "&2: " + message);
+        return new PlayerMessage(message.getSender(), "&7To " + recievingPlayer.getName() + "&2: " + messages);
 
       } else { // /msg <player>
         this.sender.setPlayerTalkingTo(recievingPlayer.getName());
