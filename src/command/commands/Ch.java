@@ -149,7 +149,7 @@ public class Ch extends Command {
             ChannelHandler.INSTANCE.addPlayerToChannelSetDefault(message.getSender(), firstArg);
             PlayerHandler.INSTANCE.addChannelAndSetDefault(message.getSender(), firstArg);
             
-            return new PlayerMessage(message.getSender(), "&[&2*&7] joined channel: &b" + firstArg);
+            return new PlayerMessage(message.getSender(), "&7[&2*&7] joined channel: &b" + firstArg);
           }
           
           return new PlayerMessage(message.getSender(), "&7[&4*&7] You must enter a password /ch join <channel> <password>");

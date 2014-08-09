@@ -29,7 +29,7 @@ public class Reply extends Command{
         sender.setInPrivateChat(true);
         sender.setPlayerTalkingTo(sender.getLastPMFrom());
         return new PlayerMessage(message.getSender(), "&7[&2*&7] Opened a channel with &b" + sender.getLastPMFrom());
-      
+        
     } else { // /r <message>
       String messages = "";
       for(int i = 0; i < message.getArgs().length; i++){
@@ -37,7 +37,7 @@ public class Reply extends Command{
       }
       
       PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getLastPMFrom()).sendPrivateMessage(sender, messages);
-      return new PlayerMessage(sender.getName(), "&7To " + sender.getPlayerTalkingTo() + "&2: " + messages);
+      return new PlayerMessage(sender.getName(), "&7To " + sender.getLastPMFrom() + "&2: " + messages);
     }
   }
 }
