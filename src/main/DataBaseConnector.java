@@ -17,8 +17,6 @@ import main.logging.Logger;
 import chat.Channel;
 import chat.ChannelHandler;
 import chat.mute.Muted;
-import chat.privateMessage.PrivateMessage;
-
 import com.google.common.base.Throwables;
 import configuration.Config;
 
@@ -453,25 +451,6 @@ public enum DataBaseConnector {
     return -1;
   }
   
-  public int getPrivateMessageId(PrivateMessage privateMessage) {
-		savePrivateMessage(privateMessage);
-		try {
-			String query = "SELECT id FROM 'privateMessages' WHERE player1 = ? AND player2 = ?";
-			PreparedStatement preparedStatement = getConnection().prepareStatement(query);
-			preparedStatement.setString(1, privateMessage.getPlayer1());
-			preparedStatement.setString(2, privateMessage.getPlayer2());
-			rs = preparedStatement.executeQuery();
-			
-			while(rs.next()) {
-				int id = rs.getInt("id");
-				return id;
-			}
-		} catch(SQLException ex) {
-			Logger.log(ex.getMessage(), Logger.CRITICAL);
-		}
-		return 0;
-	}
-
   public void saveChannel(Channel channel) {
     String owners = channel.getOwners().toString();
     owners = owners.substring(1, owners.length() - 1);
@@ -512,40 +491,6 @@ public enum DataBaseConnector {
         Logger.log(Throwables.getStackTraceAsString(e), Logger.CRITICAL);
       }
     }
-  }
-  
-  public void savePrivateMessage(PrivateMessage privateMessage) {
-	  if(privateMessageOpen(privateMessage.isOpen())) {
-		  PreparedStatement statement;
-	      try {
-	          statement = getConnection().prepareStatement(
-	              "UPDATE privatemessages " + "SET player1 = ?, player2 = ?, isOpen = ?" + "WHERE id = ?;");
-
-	          statement.setString(1, privateMessage.getPlayer1());
-	          statement.setString(2, privateMessage.getPlayer2());
-	          statement.setBoolean(3, privateMessage.isOpen());
-	          statement.setInt(4, privateMessage.getId());
-	          
-	          statement.executeUpdate();
-	        } catch (SQLException e) {
-	          Logger.log(Throwables.getStackTraceAsString(e), Logger.CRITICAL);
-	        }
-	  } else {
-	      PreparedStatement statement;
-	      try {
-	        statement = getConnection().prepareStatement(
-	            "INSERT INTO privateMessages " + "(player1, player2, isOpen) " + "VALUES (?, ?, ?);");
-
-	        statement.setString(1, privateMessage.getPlayer1());
-	        statement.setString(2, privateMessage.getPlayer2());
-	        statement.setBoolean(3, privateMessage.isOpen());
-	        
-
-	        statement.execute();
-	      } catch (SQLException e) {
-	        Logger.log(Throwables.getStackTraceAsString(e), Logger.CRITICAL);
-	      }
-	    }
   }
   
   public String[] getPlayerPermissions(String playerName, String server){
