@@ -68,6 +68,7 @@ public class Msg extends Command {
         //Set the player we are sending a private message to.
         
         recievingPlayer.sendPrivateMessage(sender, messages);
+        recievingPlayer.setLastPMFrom(sender.getName());
         
         return new PlayerMessage(message.getSender(), "&7To " + recievingPlayer.getName() + "&2: " + messages);
 
