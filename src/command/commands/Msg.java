@@ -67,10 +67,9 @@ public class Msg extends Command {
         
         //Set the player we are sending a private message to.
         
-        recievingPlayer.setLastPMFrom(sender.getName());
+        recievingPlayer.sendPrivateMessage(sender, messages);
         
-        recievingPlayer.sendPrivateMessage(recievingPlayer, messages);
-        
+        return new PlayerMessage(message.getSender(), "&7To " + recievingPlayer.getName() + "&2: " + message);
 
       } else { // /msg <player>
         this.sender.setPlayerTalkingTo(recievingPlayer.getName());
@@ -81,7 +80,5 @@ public class Msg extends Command {
     } else {
       return new PlayerMessage(message.getSender(), "&7[&4*&7] Player not online");
     }
-    return null;
-  }
-    
+  } 
 }
