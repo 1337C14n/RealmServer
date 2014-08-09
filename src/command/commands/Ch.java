@@ -121,7 +121,7 @@ public class Ch extends Command {
             return new PlayerMessage(message.getSender(), "&7[&4*&7] Channel does not exist.");
           }
         }
-        return new PlayerMessage(message.getSender(), "&7[&4*&7] /ch join <channelName>.");
+        return new PlayerMessage(message.getSender(), "&7[&4*&7] /ch join <channelName> <optional password>.");
       }
     
     default: {       
