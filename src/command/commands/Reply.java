@@ -36,7 +36,7 @@ public class Reply extends Command{
         messages += message.getArgs()[i] + " ";
       }
       
-      PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getPlayerTalkingTo()).sendPrivateMessage(sender, messages);
+      PlayerHandler.INSTANCE.getPlayerFromPlayerName(sender.getLastPMFrom()).sendPrivateMessage(sender, messages);
       return new PlayerMessage(sender.getName(), "&7To " + sender.getPlayerTalkingTo() + "&2: " + messages);
     }
   }
