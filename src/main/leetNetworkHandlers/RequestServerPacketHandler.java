@@ -51,9 +51,9 @@ public class RequestServerPacketHandler extends AsycPacketHandler {
     
     Logger.info(packetServerName + " " + game.getStatus().getStatusMessage());
     
-    if (game.getStatus() != MiniGameStatus.OPEN && game.getStatus() != MiniGameStatus.WAITING_FOR_PLAYERS){
+    /*if (game.getStatus() != MiniGameStatus.OPEN && game.getStatus() != MiniGameStatus.WAITING_FOR_PLAYERS){
       return new PlayerMessage(packetPlayerName, "&7[&4*&7] &7" + game.getStatus().getStatusMessage());
-    }
+    }*/
     
     //Request bungee client
     Client bungee = Clients.INSTANCE.getClientFromName("BungeeCord");
